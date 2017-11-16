@@ -19,34 +19,13 @@ class Sling extends Component {
     highlight: [],
   }
 
-//DUMMY HIGHLIGHT
-    // dummyHL = () => {
-    //   // console.log(this);
-    //   // console.log(this.editor);
-    //   console.log(this.editor.doc.getCursor())
-    //   console.log(this.editor.doc.listSelections())
-    //   this.editor.markText({
-    //     line: 0,
-    //     ch: 1
-    //   }, {
-    //     line: 0,
-    //     ch: 7
-    //   }, {
-    //     css: "background-color: #FFFF00"
-    //   });
-    //   // this.editor.doc.getHistory();
-    // }
+  // <=== The below function is responsible for rendering highlights
 
   userHL = () => {
 
     let cordarray = this.state.highlight;
-
     // console.log('cord array is,', cordarray)
     // console.log('first cord is, ', cordarray[0])
-
-    // // cordarray = [0,0,0,5]
-
-    // console.log('then cord array is,', cordarray)
 
     var marker = this.editor.markText({
       line: cordarray[0],
@@ -65,6 +44,8 @@ class Sling extends Component {
 
   }
 
+  // <=== This function is responsible for getting your cordinates as you move
+
   getHL = () => {
     var cords = [];
     var data = this.editor.doc.listSelections()
@@ -78,30 +59,22 @@ class Sling extends Component {
     cords.push(data[0].anchor.ch);
     console.log(cords)
   
+    // <=== this is where you can update the cords 
+    
     // this.setState({ highlight: cords })
+    // console.log(this.state.highlight)
 
-    console.log(this.state.highlight)
+
     // this.socket.emit('client.highlight', {
     //   highlight: data
     // })
   }
 
-  dummytest = function(num){
-    console.log('dummy test works if this renders: ', num)
-  }
-  
   runCode = () => {
     this.socket.emit('client.run');
   }
   
   componentDidMount() {
-    // this.editor.on('cursorActivity', function () {
-
-    //     console.log('you selected something')
-    //     // console.log(this.editor)
-    //     // Fetch the current CodeMirror document.
-    //     // var doc = editor.getDoc();
-    // });
 
     this.editor.on('cursorActivity', this.getHL);
 
@@ -123,10 +96,12 @@ class Sling extends Component {
       this.setState({ text });
     });
 
-    this.socket.on('server.highlight', ({ highlight }) => {
-      console.log('server has seen highlighted');
-      this.setState({ highlight })
-    });
+    // <=== This section is responsible for updating the socket
+
+    // this.socket.on('server.highlight', ({ highlight }) => {
+    //   console.log('server has seen highlighted');
+    //   this.setState({ highlight })
+    // });
 
     this.socket.on('server.run', ({ stdout }) => {
       this.setState({ stdout });
@@ -202,3 +177,33 @@ class Sling extends Component {
 }
 
 export default Sling;
+
+
+
+// This function is just a placeholder for highlighting format
+
+    // dummyHL = () => {
+    //   // console.log(this);
+    //   // console.log(this.editor);
+    //   console.log(this.editor.doc.getCursor())
+    //   console.log(this.editor.doc.listSelections())
+    //   this.editor.markText({
+    //     line: 0,
+    //     ch: 1
+    //   }, {
+    //     line: 0,
+    //     ch: 7
+    //   }, {
+    //     css: "background-color: #FFFF00"
+    //   });
+    //   // this.editor.doc.getHistory();
+    // }
+
+// This function is just a placeholder for document get format
+
+    // this.editor.on('cursorActivity', function () {
+    //     console.log('you selected something')
+    //     // console.log(this.editor)
+    //     // Fetch the current CodeMirror document.
+    //     // var doc = editor.getDoc();
+    // });
