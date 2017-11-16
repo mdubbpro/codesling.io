@@ -18,6 +18,14 @@ export const serverChanged = ({ io, room }) => {
     .emit('server.changed', { text });
 };
 
+export const serverHighlight = ({ io, room }) => {
+  const roomId = room.get('id');
+  const highlight = room.get('highlight');
+  io
+    .to(roomId)
+    .emit('server.highlight', { highlight });
+};
+
 export const serverLeave = ({ io, room }) => {
   io
     .in(room.get('id'))
@@ -35,9 +43,3 @@ export const serverMessage = ({ io, room }, message) => {
     .in(room.get('id'))
     .emit('server.message', message);
 };
-
-export const serverHighlight = ({ io, room }) => {
-  io.
-    in(room.get('id'))
-    .emit('server.highlight', highlight)
-}

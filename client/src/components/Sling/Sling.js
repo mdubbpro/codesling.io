@@ -19,12 +19,14 @@ class Sling extends Component {
     highlight: [],
   }
 
+  highlights = {}
   // <=== The below function is responsible for rendering highlights
 
   userHL = () => {
 
     let cordarray = this.state.highlight;
-    // console.log('cord array is,', cordarray)
+
+    console.log('userHL = cord array is,', cordarray)
     // console.log('first cord is, ', cordarray[0])
 
     var marker = this.editor.markText({
@@ -49,10 +51,10 @@ class Sling extends Component {
   getHL = () => {
     var cords = [];
     var data = this.editor.doc.listSelections()
-    console.log('starts on line,', data[0].head.line)
-    console.log('starts on ch,', data[0].head.ch)
-    console.log('ends on line,', data[0].anchor.line)
-    console.log('ends on ch,', data[0].anchor.ch)
+    // console.log('starts on line,', data[0].head.line)
+    // console.log('starts on ch,', data[0].head.ch)
+    // console.log('ends on line,', data[0].anchor.line)
+    // console.log('ends on ch,', data[0].anchor.ch)
     cords.push(data[0].head.line);
     cords.push(data[0].head.ch);
     cords.push(data[0].anchor.line);
@@ -64,10 +66,13 @@ class Sling extends Component {
     // this.setState({ highlight: cords })
     // console.log(this.state.highlight)
 
+    this.setState({ highlight: cords })
+    console.log('current highlight state is, ', this.state.highlight)
 
-    // this.socket.emit('client.highlight', {
-    //   highlight: data
-    // })
+
+    this.socket.emit('client.highlight', {
+      highlight: cords
+    })
   }
 
   runCode = () => {
@@ -96,12 +101,11 @@ class Sling extends Component {
       this.setState({ text });
     });
 
-    // <=== This section is responsible for updating the socket
-
-    // this.socket.on('server.highlight', ({ highlight }) => {
-    //   console.log('server has seen highlighted');
-    //   this.setState({ highlight })
-    // });
+    this.socket.on('server.highlight', ({ highlight }) => {
+      this.setState({ highlight });
+  
+      console.log('after server highlight', this.state)
+    });
 
     this.socket.on('server.run', ({ stdout }) => {
       this.setState({ stdout });

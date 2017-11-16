@@ -6,7 +6,7 @@ const startingText =
 hello();
 `;
 
-const highlight = [0,0,0,0]
+const highlight = [];
 
 /**
  *
@@ -25,7 +25,7 @@ export default class Rooms {
       room = new Map();
       room.set('id', roomId);
       room.set('text', startingText);
-      room.set('highlight', highlight)
+      room.set('highlight', highlight);
       this.store.set(roomId, room);
     }
     return room;
