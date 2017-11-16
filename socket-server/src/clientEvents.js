@@ -7,6 +7,7 @@ import {
   serverLeave,
   serverRun,
   serverMessage,
+  serverHighlight,
 } from './serverEvents';
 
 /**
@@ -21,7 +22,7 @@ import {
  *
  */
 const clientReady = ({ io, client, room }) => {
-  log('client ready heard');
+  log('client ready heard, io is, ', io, 'client is, ', client, 'room is, ', room);
   serverInitialState({ io, client, room });
 };
 
@@ -30,6 +31,12 @@ const clientUpdate = ({ io, client, room }, payload) => {
   room.set('text', payload.text);
   serverChanged({ io, client, room });
 };
+
+// const clientHighlight = ({ io, client, room}, payload) => {
+//   log('client update heard. payload = ', payload.highlight)
+//   room.set('highlight', payload.highlight);
+//   serverHighlight({ io, client, room })
+// }
 
 const clientDisconnect = ({ io, room }) => {
   log('client disconnected');
@@ -62,6 +69,7 @@ const clientEmitters = {
   'client.disconnect': clientDisconnect,
   'client.run': clientRun,
   'client.message': clientMessage,
+  // 'client.highlight': clientHighlight
 };
 
 export default clientEmitters;
