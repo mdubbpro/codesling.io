@@ -19,12 +19,12 @@ class Sling extends Component {
     highlight: [],
   }
 
-  highlights = {}
+  highlights = []
   // <=== The below function is responsible for rendering highlights
 
   userHL = () => {
 
-    let cordarray = this.state.highlight;
+    let cordarray = this.highlights;
 
     console.log('userHL = cord array is,', cordarray)
     // console.log('first cord is, ', cordarray[0])
@@ -39,11 +39,22 @@ class Sling extends Component {
       css: "background-color: #FFFF00"
     });
 
+    var marker2 = this.editor.markText({
+      line: cordarray[2],
+      ch: cordarray[3]
+    }, {
+      line: cordarray[0],
+      ch: cordarray[1]
+    }, {
+      css: "background-color: #FFFF00"
+    });
+
     function timeclear(){
       marker.clear();
+      marker2.clear();
     }
     setTimeout(timeclear, 2000);
-
+    // setTimeout(this.userHL, 2000);
   }
 
   // <=== This function is responsible for getting your cordinates as you move
@@ -66,7 +77,8 @@ class Sling extends Component {
     // this.setState({ highlight: cords })
     // console.log(this.state.highlight)
 
-    this.setState({ highlight: cords })
+    // this.setState({ highlight: cords })
+    this.highlights = cords;
     console.log('current highlight state is, ', this.state.highlight)
 
 
@@ -104,10 +116,11 @@ class Sling extends Component {
     });
 
     this.socket.on('server.highlight', ({ highlight }) => {
-      this.setState({ highlight });
+      // this.setState({ highlight });
+      this.highlights = highlight
       this.userHL()
   
-      console.log('after server highlight', this.state)
+      console.log('after server highlight', this.highlights)
     });
 
     this.socket.on('server.run', ({ stdout }) => {
