@@ -73,6 +73,8 @@ class Sling extends Component {
     this.socket.emit('client.highlight', {
       highlight: cords
     })
+
+
   }
 
   runCode = () => {
@@ -103,6 +105,7 @@ class Sling extends Component {
 
     this.socket.on('server.highlight', ({ highlight }) => {
       this.setState({ highlight });
+      this.userHL()
   
       console.log('after server highlight', this.state)
     });
